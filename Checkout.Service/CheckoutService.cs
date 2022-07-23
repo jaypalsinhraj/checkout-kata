@@ -34,38 +34,9 @@
         {
             var scannedProductsWhereDiscountNotApplicable = calculateTotalWhereDiscountNotApplicable();
             var scannedProductsTotalWithoutDiscount = calculateTotalForProductsWithNoDiscount();
-            var discountedPrice = _discountService.GetDiscountedPrice(_scannedProducts); //calculateDiscountedPrice();
+            var discountedPrice = _discountService.GetDiscountedPrice(_scannedProducts);
 
             return scannedProductsWhereDiscountNotApplicable + scannedProductsTotalWithoutDiscount + discountedPrice;
-        }
-
-
-
-        private decimal calculateDiscountedPrice()
-        {
-            var scannedProductsGroup = _scannedProducts.GroupBy(p => p.SKU);
-            decimal discount = 0;
-
-            foreach (var scannedProduct in scannedProductsGroup)
-            {
-                var SKU = scannedProduct.Key;
-                var productQty = scannedProduct.Count();
-
-                var discountItem = _discountPrices.SingleOrDefault(d => d.SKU == SKU);
-                if (discountItem == null)
-                    continue;
-
-                var discountQty = discountItem.Quantity;
-                var discountPrice = discountItem.Price;
-
-                if (productQty < discountQty)
-                    continue;
-
-                discount += (productQty / discountQty) * discountPrice;
-                discount += (productQty % discountQty) * (_scannedProducts.Distinct()?.SingleOrDefault(p => p.SKU == SKU)?.Price ?? 0);
-            }
-
-            return discount;
         }
 
         private decimal calculateTotalForProductsWithNoDiscount()
