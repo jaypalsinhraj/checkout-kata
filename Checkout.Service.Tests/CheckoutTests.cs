@@ -20,20 +20,20 @@ public class CheckoutTests
         _checkoutService = new CheckoutService(_fakeProducts);
     }
 
-    private IList<Product> fakeScanProduct(string products)
+    private void fakeScanProduct(string products)
     {
-        IList<Product> fakeScannedProducts = new List<Product>();
         foreach (var product in products.ToCharArray())
         {
-            fakeScannedProducts = _checkoutService.ScanProducts(product);
+            _checkoutService.ScanProducts(product);
         }
-        return fakeScannedProducts;
     }
 
     [Fact]
     public void ReturnScannedProductWhenSKUScanned()
     {
-        var scannedProducts = _checkoutService.ScanProducts('A');
+        _checkoutService.ScanProducts('A');
+
+        var scannedProducts = _checkoutService.GetScannedProducts();
 
         Assert.Equal('A', scannedProducts[0].SKU);
     }
@@ -45,9 +45,9 @@ public class CheckoutTests
     [InlineData("D", 15)]
     public void ReturnTotalWhenSingleProductIsScanned(string products, decimal expectedTotal)
     {
-        var fakeScannedProducts = fakeScanProduct(products);
+        fakeScanProduct(products);
 
-        var total = _checkoutService.CaculateTotal(fakeScannedProducts);
+        var total = _checkoutService.CaculateTotal();
 
         Assert.Equal(expectedTotal, total);
     }
@@ -59,9 +59,9 @@ public class CheckoutTests
     [InlineData("DA", 65)]
     public void ReturnTotalWhenTwoDifferentProductsAreScanned(string products, decimal expectedTotal)
     {
-        var fakeScannedProducts = fakeScanProduct(products);
+        fakeScanProduct(products);
 
-        var total = _checkoutService.CaculateTotal(fakeScannedProducts);
+        var total = _checkoutService.CaculateTotal();
 
         Assert.Equal(expectedTotal, total);
     }

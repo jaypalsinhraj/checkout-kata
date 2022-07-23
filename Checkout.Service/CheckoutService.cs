@@ -3,28 +3,32 @@
     public class CheckoutService : ICheckoutService
     {
         private readonly IList<Product> _products;
+        private IList<Product> _scannedProducts;
 
         public CheckoutService(IList<Product> products)
         {
             _products = products;
+            _scannedProducts = new List<Product>();
         }
 
-        public IList<Product> ScanProducts(char SKU)
+        public void ScanProducts(char SKU)
         {
-            var _scannedProducts = new List<Product>();
             var product = _products.SingleOrDefault(p => p.SKU == SKU);
 
             if(product != null)
             {
                 _scannedProducts.Add(product);
             }
+        }
 
+        public IList<Product> GetScannedProducts()
+        {
             return _scannedProducts;
         }
 
-        public decimal CaculateTotal(IList<Product> scannedProducts)
+        public decimal CaculateTotal()
         {
-            var total = scannedProducts.Sum(p => p.Price);
+            var total = _scannedProducts.Sum(p => p.Price);
 
             return total;
         }

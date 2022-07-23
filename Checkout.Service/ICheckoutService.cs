@@ -2,6 +2,7 @@
 
 public interface ICheckoutService
 {
-    IList<Product> ScanProducts(char SKU);
-    decimal CaculateTotal(IList<Product> scannedProducts);
+    void ScanProducts(char SKU);
+    IList<Product> GetScannedProducts();
+    decimal CaculateTotal();
 }
