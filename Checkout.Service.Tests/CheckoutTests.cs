@@ -90,6 +90,14 @@ public class CheckoutTests
     [InlineData("A",50)]
     [InlineData("AA",100)]
     [InlineData("AAAA",180)]
+    [InlineData("AAAABB",225)]
+    [InlineData("AABBAA",225)]
+    [InlineData("AAAAAA",260)]
+    [InlineData("BBB",75)]
+    [InlineData("CCC", 60)]
+    [InlineData("AAABBD", 190)]
+    [InlineData("CDABABA", 210)]
+    [InlineData("CDBA", 115)]
     public void ReturnDiscountedTotalWhenProductsAreScannedInVariousOrder(string products, decimal expectedTotal)
     {
         fakeScanProduct(products);
