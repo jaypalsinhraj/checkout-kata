@@ -20,6 +20,16 @@ public class CheckoutTests
         _checkoutService = new CheckoutService(_fakeProducts);
     }
 
+    private IList<Product> fakeScanProduct(string products)
+    {
+        IList<Product> fakeScannedProducts = new List<Product>();
+        foreach (var product in products.ToCharArray())
+        {
+            fakeScannedProducts = _checkoutService.ScanProducts(product);
+        }
+        return fakeScannedProducts;
+    }
+
     [Fact]
     public void ReturnScannedProductWhenSKUScanned()
     {
@@ -35,14 +45,25 @@ public class CheckoutTests
     [InlineData("D", 15)]
     public void ReturnTotalWhenSingleProductIsScanned(string products, decimal expectedTotal)
     {
-        IList<Product> fakeScannedProducts = new List<Product>();
-        foreach(var product in products)
-        {
-            fakeScannedProducts = _checkoutService.ScanProducts(product);
-        }
+        var fakeScannedProducts = fakeScanProduct(products);
 
         var total = _checkoutService.CaculateTotal(fakeScannedProducts);
 
         Assert.Equal(expectedTotal, total);
     }
+
+    [Theory]
+    [InlineData("AB", 80)]
+    [InlineData("BC", 50)]
+    [InlineData("CD", 35)]
+    [InlineData("DA", 65)]
+    public void ReturnTotalWhenTwoDifferentProductsAreScanned(string products, decimal expectedTotal)
+    {
+        var fakeScannedProducts = fakeScanProduct(products);
+
+        var total = _checkoutService.CaculateTotal(fakeScannedProducts);
+
+        Assert.Equal(expectedTotal, total);
+    }
+
 }
