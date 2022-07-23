@@ -28,11 +28,36 @@
             return _scannedProducts;
         }
 
+        private decimal calculateDiscount()
+        {
+            var scannedProductsGroup = _scannedProducts.GroupBy(p => p.SKU);
+            decimal discount = 0;
+
+            foreach(var scannedProduct in scannedProductsGroup)
+            {
+                var productQty = scannedProduct.Count();
+
+                var discountItem = _discountPrices.SingleOrDefault(d => d.SKU == scannedProduct.Key);
+
+                if (discountItem == null)
+                    continue;
+
+                var discountQty = discountItem.Quantity;
+                var discountPrice = discountItem.Price;
+
+                discount += (productQty / discountQty) * discountPrice;
+
+            }
+
+            return discount;
+        }
+
         public decimal CaculateTotal()
         {
             var total = _scannedProducts.Sum(p => p.Price);
+            var discountedPrice = calculateDiscount();
 
-            return total;
+            return discountedPrice <= 0 ? total : discountedPrice;
         }
 
     }
