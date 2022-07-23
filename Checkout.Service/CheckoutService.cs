@@ -22,9 +22,11 @@
             return _scannedProducts;
         }
 
-        public decimal CaculateTotal()
+        public decimal CaculateTotal(IList<Product> scannedProducts)
         {
-            throw new NotImplementedException();
+            var total = scannedProducts.Sum(p => p.Price);
+
+            return total;
         }
 
     }

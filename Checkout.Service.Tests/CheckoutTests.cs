@@ -27,4 +27,22 @@ public class CheckoutTests
 
         Assert.Equal('A', scannedProducts[0].SKU);
     }
+
+    [Theory]
+    [InlineData("A",50)]
+    [InlineData("B", 30)]
+    [InlineData("C", 20)]
+    [InlineData("D", 15)]
+    public void ReturnTotalWhenSingleProductIsScanned(string products, decimal expectedTotal)
+    {
+        IList<Product> fakeScannedProducts = new List<Product>();
+        foreach(var product in products)
+        {
+            fakeScannedProducts = _checkoutService.ScanProducts(product);
+        }
+
+        var total = _checkoutService.CaculateTotal(fakeScannedProducts);
+
+        Assert.Equal(expectedTotal, total);
+    }
 }
