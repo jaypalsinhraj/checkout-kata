@@ -54,7 +54,7 @@ public class CheckoutTests
     {
         fakeScanProduct(products);
 
-        var total = _checkoutService.CaculateTotal();
+        var total = _checkoutService.GetTotalPrice();
 
         Assert.Equal(expectedTotal, total);
     }
@@ -68,7 +68,7 @@ public class CheckoutTests
     {
         fakeScanProduct(products);
 
-        var total = _checkoutService.CaculateTotal();
+        var total = _checkoutService.GetTotalPrice();
 
         Assert.Equal(expectedTotal, total);
     }
@@ -80,7 +80,7 @@ public class CheckoutTests
     {
         fakeScanProduct(products);
 
-        var total = _checkoutService.CaculateTotal();
+        var total = _checkoutService.GetTotalPrice();
 
         Assert.Equal(expectedTotal, total);
     }
@@ -104,7 +104,7 @@ public class CheckoutTests
     {
         fakeScanProduct(products);
 
-        var total = _checkoutService.CaculateTotal();
+        var total = _checkoutService.GetTotalPrice();
 
         Assert.Equal(expectedTotal, total);
     }

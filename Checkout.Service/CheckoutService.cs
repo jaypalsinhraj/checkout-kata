@@ -28,17 +28,28 @@
             return _scannedProducts;
         }
 
-        private decimal calculateDiscount()
+        public decimal GetTotalPrice()
+        {
+            var scannedProductsWhereDiscountNotApplicable = calculateTotalWhereDiscountNotApplicable();
+            var scannedProductsTotalWithoutDiscount = calculateTotalForProductsWithNoDiscount();
+            var discountedPrice = calculateDiscountedPrice();
+
+            return scannedProductsWhereDiscountNotApplicable + scannedProductsTotalWithoutDiscount + discountedPrice;
+        }
+
+
+
+        private decimal calculateDiscountedPrice()
         {
             var scannedProductsGroup = _scannedProducts.GroupBy(p => p.SKU);
             decimal discount = 0;
 
-            foreach(var scannedProduct in scannedProductsGroup)
+            foreach (var scannedProduct in scannedProductsGroup)
             {
+                var SKU = scannedProduct.Key;
                 var productQty = scannedProduct.Count();
 
-                var discountItem = _discountPrices.SingleOrDefault(d => d.SKU == scannedProduct.Key);
-
+                var discountItem = _discountPrices.SingleOrDefault(d => d.SKU == SKU);
                 if (discountItem == null)
                     continue;
 
@@ -49,7 +60,7 @@
                     continue;
 
                 discount += (productQty / discountQty) * discountPrice;
-                discount += (productQty % discountQty) * (_products.Single(p => p.SKU == scannedProduct.Key)?.Price ?? 0);
+                discount += (productQty % discountQty) * (_products.SingleOrDefault(p => p.SKU == SKU)?.Price ?? 0);
             }
 
             return discount;
@@ -57,38 +68,25 @@
 
         private decimal calculateTotalForProductsWithNoDiscount()
         {
-            var scannedProductsWithoutDiscount = _scannedProducts.Where(p => !_discountPrices.Any(d => d.SKU == p.SKU));
-            return scannedProductsWithoutDiscount.Sum(x => x.Price);
+            var scannedProductsWithoutDiscount = _scannedProducts.Where(p => _discountPrices.All(d => d.SKU != p.SKU));
+            return scannedProductsWithoutDiscount?.Sum(x => x.Price) ?? 0;
         }
 
         private decimal calculateTotalWhereDiscountNotApplicable()
         {
-            var discountItems = _discountPrices.Where(d => _scannedProducts.Any(p => p.SKU == d.SKU));
-            
             decimal total = 0;
-            
-            foreach(var discountItem in discountItems)
+
+            foreach (var discountItem in _discountPrices.Where(d => _scannedProducts.Any(p => p.SKU == d.SKU)))
             {
                 var discountQty = discountItem?.Quantity ?? 0;
                 var products = _scannedProducts.Where(p => p.SKU == discountItem?.SKU);
-                var productQty = products.Count();
+                var productQty = products?.Count() ?? 0;
 
                 if (productQty < discountQty)
-                    total += products.Sum(p => p.Price);
+                    total += products?.Sum(p => p.Price) ?? 0;
             }
 
             return total;
         }
-
-
-        public decimal CaculateTotal()
-        {
-            var scannedProductsWhereDiscountNotApplicable = calculateTotalWhereDiscountNotApplicable();
-            var scannedProductsTotalWithoutDiscount = calculateTotalForProductsWithNoDiscount();
-            var discountedPrice = calculateDiscount();
-
-            return scannedProductsWhereDiscountNotApplicable + scannedProductsTotalWithoutDiscount + discountedPrice;
-        }
-
     }
 }

@@ -4,5 +4,5 @@ public interface ICheckoutService
 {
     void ScanProducts(char SKU);
     IList<Product> GetScannedProducts();
-    decimal CaculateTotal();
+    decimal GetTotalPrice();
 }
