@@ -46,7 +46,7 @@
                 var discountPrice = discountItem.Price;
 
                 discount += (productQty / discountQty) * discountPrice;
-
+                discount += (productQty % discountQty) * (_products.Single(p => p.SKU == scannedProduct.Key)?.Price ?? 0);
             }
 
             return discount;
