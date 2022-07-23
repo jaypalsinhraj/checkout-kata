@@ -73,5 +73,16 @@ public class CheckoutTests
         Assert.Equal(expectedTotal, total);
     }
 
+    [Theory]
+    [InlineData("AAA", 130)]
+    [InlineData("BB", 45)]
+    public void ReturnDiscountedTotalWhenProductsAligibleForDiscountAreScanned(string products, decimal expectedTotal)
+    {
+        fakeScanProduct(products);
+
+        var total = _checkoutService.CaculateTotal();
+
+        Assert.Equal(expectedTotal, total);
+    }
 
 }
