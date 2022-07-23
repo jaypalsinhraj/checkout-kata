@@ -4,12 +4,14 @@
     {
         private readonly IList<Product> _products;
         private readonly IList<DiscountOnQty> _discountPrices;
+        private readonly IDiscountService _discountService;
         private IList<Product> _scannedProducts;
 
-        public CheckoutService(IList<Product> products, IList<DiscountOnQty> discountPrices)
+        public CheckoutService(IList<Product> products, IList<DiscountOnQty> discountPrices, IDiscountService discountService)
         {
             _products = products;
             _discountPrices = discountPrices;
+            _discountService = discountService;
             _scannedProducts = new List<Product>();
         }
 
@@ -32,7 +34,7 @@
         {
             var scannedProductsWhereDiscountNotApplicable = calculateTotalWhereDiscountNotApplicable();
             var scannedProductsTotalWithoutDiscount = calculateTotalForProductsWithNoDiscount();
-            var discountedPrice = calculateDiscountedPrice();
+            var discountedPrice = _discountService.GetDiscountedPrice(_scannedProducts); //calculateDiscountedPrice();
 
             return scannedProductsWhereDiscountNotApplicable + scannedProductsTotalWithoutDiscount + discountedPrice;
         }
@@ -60,7 +62,7 @@
                     continue;
 
                 discount += (productQty / discountQty) * discountPrice;
-                discount += (productQty % discountQty) * (_products.SingleOrDefault(p => p.SKU == SKU)?.Price ?? 0);
+                discount += (productQty % discountQty) * (_scannedProducts.Distinct()?.SingleOrDefault(p => p.SKU == SKU)?.Price ?? 0);
             }
 
             return discount;

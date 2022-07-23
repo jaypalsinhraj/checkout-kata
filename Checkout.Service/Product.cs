@@ -1,5 +1,4 @@
-﻿
-namespace Checkout.Service;
+﻿namespace Checkout.Service;
 
 public class Product
 {

@@ -5,12 +5,10 @@ namespace Checkout.Service.Tests;
 public class CheckoutTests
 {
     ICheckoutService _checkoutService;
-    IList<Product> _fakeProducts;
-    IList<DiscountOnQty> _fakeDiscountPrices;
 
     public CheckoutTests()
     {
-        _fakeProducts = new List<Product>
+        var _fakeProducts = new List<Product>
         {
             new Product { SKU = 'A', Price = 50 },
             new Product { SKU = 'B', Price = 30 },
@@ -18,13 +16,15 @@ public class CheckoutTests
             new Product { SKU = 'D', Price = 15 }
         };
 
-        _fakeDiscountPrices = new List<DiscountOnQty>
+        var _fakeDiscountPrices = new List<DiscountOnQty>
         {
             new DiscountOnQty { SKU = 'A', Quantity = 3, Price = 130 },
             new DiscountOnQty { SKU = 'B', Quantity = 2, Price = 45 }
         };
 
-        _checkoutService = new CheckoutService(_fakeProducts, _fakeDiscountPrices);
+        var discountService = new DiscountService(_fakeDiscountPrices);
+
+        _checkoutService = new CheckoutService(_fakeProducts, _fakeDiscountPrices, discountService);
     }
 
     private void fakeScanProduct(string products)
