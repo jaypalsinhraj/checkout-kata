@@ -1,0 +1,12 @@
+C:\Users\jaypa\Documents\__Projects\Dojo\Katas-2\Checkout-Kata\Checkout.Service\bin\Debug\net6.0\Checkout.Service.deps.json
+C:\Users\jaypa\Documents\__Projects\Dojo\Katas-2\Checkout-Kata\Checkout.Service\bin\Debug\net6.0\Checkout.Service.dll
+C:\Users\jaypa\Documents\__Projects\Dojo\Katas-2\Checkout-Kata\Checkout.Service\bin\Debug\net6.0\Checkout.Service.pdb
+C:\Users\jaypa\Documents\__Projects\Dojo\Katas-2\Checkout-Kata\Checkout.Service\obj\Debug\net6.0\Checkout.Service.csproj.AssemblyReference.cache
+C:\Users\jaypa\Documents\__Projects\Dojo\Katas-2\Checkout-Kata\Checkout.Service\obj\Debug\net6.0\Checkout.Service.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jaypa\Documents\__Projects\Dojo\Katas-2\Checkout-Kata\Checkout.Service\obj\Debug\net6.0\Checkout.Service.AssemblyInfoInputs.cache
+C:\Users\jaypa\Documents\__Projects\Dojo\Katas-2\Checkout-Kata\Checkout.Service\obj\Debug\net6.0\Checkout.Service.AssemblyInfo.cs
+C:\Users\jaypa\Documents\__Projects\Dojo\Katas-2\Checkout-Kata\Checkout.Service\obj\Debug\net6.0\Checkout.Service.csproj.CoreCompileInputs.cache
+C:\Users\jaypa\Documents\__Projects\Dojo\Katas-2\Checkout-Kata\Checkout.Service\obj\Debug\net6.0\Checkout.Service.dll
+C:\Users\jaypa\Documents\__Projects\Dojo\Katas-2\Checkout-Kata\Checkout.Service\obj\Debug\net6.0\refint\Checkout.Service.dll
+C:\Users\jaypa\Documents\__Projects\Dojo\Katas-2\Checkout-Kata\Checkout.Service\obj\Debug\net6.0\Checkout.Service.pdb
+C:\Users\jaypa\Documents\__Projects\Dojo\Katas-2\Checkout-Kata\Checkout.Service\obj\Debug\net6.0\ref\Checkout.Service.dll

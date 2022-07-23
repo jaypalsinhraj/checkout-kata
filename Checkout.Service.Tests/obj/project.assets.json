@@ -1670,6 +1670,16 @@
         "build": {
           "build/netcoreapp2.1/xunit.runner.visualstudio.props": {}
         }
+      },
+      "Checkout.Service/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/Checkout.Service.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Checkout.Service.dll": {}
+        }
       }
     }
   },
@@ -5899,10 +5909,16 @@
         "xunit.runner.visualstudio.2.4.3.nupkg.sha512",
         "xunit.runner.visualstudio.nuspec"
       ]
+    },
+    "Checkout.Service/1.0.0": {
+      "type": "project",
+      "path": "../Checkout.Service/Checkout.Service.csproj",
+      "msbuildProject": "../Checkout.Service/Checkout.Service.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
+      "Checkout.Service >= 1.0.0",
       "Microsoft.NET.Test.Sdk >= 17.1.0",
       "coverlet.collector >= 3.1.2",
       "xunit >= 2.4.1",
@@ -5939,7 +5955,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\jaypa\\Documents\\__Projects\\Dojo\\Katas-2\\Checkout-Kata\\Checkout.Service\\Checkout.Service.csproj": {
+              "projectPath": "C:\\Users\\jaypa\\Documents\\__Projects\\Dojo\\Katas-2\\Checkout-Kata\\Checkout.Service\\Checkout.Service.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
