@@ -3,11 +3,13 @@
     public class CheckoutService : ICheckoutService
     {
         private readonly IList<Product> _products;
+        private readonly IList<DiscountOnQty> _discountPrices;
         private IList<Product> _scannedProducts;
 
-        public CheckoutService(IList<Product> products)
+        public CheckoutService(IList<Product> products, IList<DiscountOnQty> discountPrices)
         {
             _products = products;
+            _discountPrices = discountPrices;
             _scannedProducts = new List<Product>();
         }
 

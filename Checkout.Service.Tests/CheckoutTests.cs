@@ -6,6 +6,7 @@ public class CheckoutTests
 {
     ICheckoutService _checkoutService;
     IList<Product> _fakeProducts;
+    IList<DiscountOnQty> _fakeDiscountPrices;
 
     public CheckoutTests()
     {
@@ -17,7 +18,13 @@ public class CheckoutTests
             new Product { SKU = 'D', Price = 15 }
         };
 
-        _checkoutService = new CheckoutService(_fakeProducts);
+        _fakeDiscountPrices = new List<DiscountOnQty>
+        {
+            new DiscountOnQty { SKU = 'A', Quantity = 3, Price = 130 },
+            new DiscountOnQty { SKU = 'B', Quantity = 2, Price = 45 }
+        };
+
+        _checkoutService = new CheckoutService(_fakeProducts, _fakeDiscountPrices);
     }
 
     private void fakeScanProduct(string products)
@@ -65,5 +72,6 @@ public class CheckoutTests
 
         Assert.Equal(expectedTotal, total);
     }
+
 
 }
