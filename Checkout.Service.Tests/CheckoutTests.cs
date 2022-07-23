@@ -85,4 +85,18 @@ public class CheckoutTests
         Assert.Equal(expectedTotal, total);
     }
 
+    [Theory]
+    [InlineData("",0)]
+    [InlineData("A",50)]
+    [InlineData("AA",100)]
+    [InlineData("AAAA",180)]
+    public void ReturnDiscountedTotalWhenProductsAreScannedInVariousOrder(string products, decimal expectedTotal)
+    {
+        fakeScanProduct(products);
+
+        var total = _checkoutService.CaculateTotal();
+
+        Assert.Equal(expectedTotal, total);
+    }
+
 }
