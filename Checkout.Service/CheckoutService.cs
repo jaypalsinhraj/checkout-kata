@@ -55,12 +55,39 @@
             return discount;
         }
 
+        private decimal calculateTotalForProductsWithNoDiscount()
+        {
+            var scannedProductsWithoutDiscount = _scannedProducts.Where(p => !_discountPrices.Any(d => d.SKU == p.SKU));
+            return scannedProductsWithoutDiscount.Sum(x => x.Price);
+        }
+
+        private decimal calculateTotalWhereDiscountNotApplicable()
+        {
+            var discountItems = _discountPrices.Where(d => _scannedProducts.Any(p => p.SKU == d.SKU));
+            
+            decimal total = 0;
+            
+            foreach(var discountItem in discountItems)
+            {
+                var discountQty = discountItem?.Quantity ?? 0;
+                var products = _scannedProducts.Where(p => p.SKU == discountItem?.SKU);
+                var productQty = products.Count();
+
+                if (productQty < discountQty)
+                    total += products.Sum(p => p.Price);
+            }
+
+            return total;
+        }
+
+
         public decimal CaculateTotal()
         {
-            var total = _scannedProducts.Sum(p => p.Price);
+            var scannedProductsWhereDiscountNotApplicable = calculateTotalWhereDiscountNotApplicable();
+            var scannedProductsTotalWithoutDiscount = calculateTotalForProductsWithNoDiscount();
             var discountedPrice = calculateDiscount();
 
-            return discountedPrice <= 0 ? total : discountedPrice;
+            return scannedProductsWhereDiscountNotApplicable + scannedProductsTotalWithoutDiscount + discountedPrice;
         }
 
     }
