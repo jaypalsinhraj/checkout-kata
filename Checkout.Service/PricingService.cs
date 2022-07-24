@@ -16,7 +16,7 @@ public class PricingService : IPricingService
         return _discountService.GetDiscountedPrice(scannedProducts);
     }
 
-    public decimal GetTotalPrice(IList<Product> scannedProducts)
+    public decimal GetNonDiscountedPrice(IList<Product> scannedProducts)
     {
         return calculateTotalForProductsWithNoDiscount(scannedProducts) + calculateTotalWhereDiscountNotApplicable(scannedProducts);
     }
