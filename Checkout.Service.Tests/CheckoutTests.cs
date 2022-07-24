@@ -23,8 +23,9 @@ public class CheckoutTests
         };
 
         var discountService = new DiscountService(_fakeDiscountPrices);
+        var pricingService = new PricingService(discountService);
 
-        _checkoutService = new CheckoutService(_fakeProducts, _fakeDiscountPrices, discountService);
+        _checkoutService = new CheckoutService(_fakeProducts, _fakeDiscountPrices, discountService, pricingService);
     }
 
     private void fakeScanProduct(string products)

@@ -1,7 +1,7 @@
 ﻿namespace Checkout.Service;
 
-public interface IDiscountService
+public interface IPricingService
 {
-    IList<DiscountOnQty> GetDiscountPrices();
     decimal GetDiscountedPrice(IList<Product> scannedProducts);
+    decimal GetTotalPrice(IList<Product> scannedProducts);
 }

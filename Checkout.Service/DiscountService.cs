@@ -35,4 +35,9 @@ public class DiscountService : IDiscountService
 
         return discount;
     }
+
+    public IList<DiscountOnQty> GetDiscountPrices()
+    {
+        return _discountPrices;
+    }
 }

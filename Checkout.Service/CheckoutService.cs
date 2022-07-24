@@ -5,13 +5,15 @@
         private readonly IList<Product> _products;
         private readonly IList<DiscountOnQty> _discountPrices;
         private readonly IDiscountService _discountService;
+        private readonly IPricingService _pricingService;
         private IList<Product> _scannedProducts;
 
-        public CheckoutService(IList<Product> products, IList<DiscountOnQty> discountPrices, IDiscountService discountService)
+        public CheckoutService(IList<Product> products, IList<DiscountOnQty> discountPrices, IDiscountService discountService, IPricingService pricingService)
         {
             _products = products;
             _discountPrices = discountPrices;
             _discountService = discountService;
+            _pricingService = pricingService;
             _scannedProducts = new List<Product>();
         }
 
@@ -36,7 +38,10 @@
             var scannedProductsTotalWithoutDiscount = calculateTotalForProductsWithNoDiscount();
             var discountedPrice = _discountService.GetDiscountedPrice(_scannedProducts);
 
-            return scannedProductsWhereDiscountNotApplicable + scannedProductsTotalWithoutDiscount + discountedPrice;
+            var totalDiscount = _pricingService.GetDiscountedPrice(_scannedProducts);
+            var totalPrice = _pricingService.GetTotalPrice(_scannedProducts);
+
+            return totalDiscount + totalPrice;
         }
 
         private decimal calculateTotalForProductsWithNoDiscount()
