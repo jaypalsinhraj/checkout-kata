@@ -1,39 +1,38 @@
-﻿namespace Checkout.Service
+﻿namespace Checkout.Service;
+
+public class CheckoutService : ICheckoutService
 {
-    public class CheckoutService : ICheckoutService
+    private readonly IList<Product> _products;
+    private readonly IPricingService _pricingService;
+    private IList<Product> _scannedProducts;
+
+    public CheckoutService(IList<Product> products, IPricingService pricingService)
     {
-        private readonly IList<Product> _products;
-        private readonly IPricingService _pricingService;
-        private IList<Product> _scannedProducts;
+        _products = products;
+        _pricingService = pricingService;
+        _scannedProducts = new List<Product>();
+    }
 
-        public CheckoutService(IList<Product> products, IPricingService pricingService)
+    public void ScanProducts(char SKU)
+    {
+        var product = _products.SingleOrDefault(p => p.SKU == SKU);
+
+        if(product != null)
         {
-            _products = products;
-            _pricingService = pricingService;
-            _scannedProducts = new List<Product>();
+            _scannedProducts.Add(product);
         }
+    }
 
-        public void ScanProducts(char SKU)
-        {
-            var product = _products.SingleOrDefault(p => p.SKU == SKU);
+    public IList<Product> GetScannedProducts()
+    {
+        return _scannedProducts;
+    }
 
-            if(product != null)
-            {
-                _scannedProducts.Add(product);
-            }
-        }
+    public decimal GetTotalPrice()
+    {
+        var discountedPrice = _pricingService.GetDiscountedPrice(_scannedProducts);
+        var nonDiscountedPrice = _pricingService.GetNonDiscountedPrice(_scannedProducts);
 
-        public IList<Product> GetScannedProducts()
-        {
-            return _scannedProducts;
-        }
-
-        public decimal GetTotalPrice()
-        {
-            var discountedPrice = _pricingService.GetDiscountedPrice(_scannedProducts);
-            var nonDiscountedPrice = _pricingService.GetNonDiscountedPrice(_scannedProducts);
-
-            return discountedPrice + nonDiscountedPrice;
-        }
+        return discountedPrice + nonDiscountedPrice;
     }
 }

@@ -18,21 +18,12 @@ public class PricingService : IPricingService
 
     public decimal GetNonDiscountedPrice(IList<Product> scannedProducts)
     {
-        return calculateTotalForProductsWithNoDiscount(scannedProducts) + calculateTotalWhereDiscountNotApplicable(scannedProducts);
-    }
+        if (scannedProducts == null || !scannedProducts.Any())
+            return 0;
 
+        var total = getScannedProductsWithoutDiscount(scannedProducts)?.Sum(x => x.Price) ?? 0;
 
-    private decimal calculateTotalForProductsWithNoDiscount(IList<Product> scannedProducts)
-    {
-        var scannedProductsWithoutDiscount = scannedProducts.Where(p => _discountPrices.All(d => d.SKU != p.SKU));
-        return scannedProductsWithoutDiscount?.Sum(x => x.Price) ?? 0;
-    }
-
-    private decimal calculateTotalWhereDiscountNotApplicable(IList<Product> scannedProducts)
-    {
-        decimal total = 0;
-
-        foreach (var discountItem in _discountPrices.Where(d => scannedProducts.Any(p => p.SKU == d.SKU)))
+        foreach (var discountItem in getDiscountedItemsNotApplicabelToThisCart(scannedProducts))
         {
             var discountQty = discountItem?.Quantity ?? 0;
             var products = scannedProducts.Where(p => p.SKU == discountItem?.SKU);
@@ -43,6 +34,17 @@ public class PricingService : IPricingService
         }
 
         return total;
+
     }
 
+
+    private IEnumerable<Product> getScannedProductsWithoutDiscount(IList<Product> scannedProducts)
+    {
+        return scannedProducts.Where(p => _discountPrices.All(d => d.SKU != p.SKU));
+    }
+
+    private IEnumerable<DiscountOnQty> getDiscountedItemsNotApplicabelToThisCart(IList<Product> scannedProducts)
+    {
+        return _discountPrices.Where(d => scannedProducts.Any(p => p.SKU == d.SKU));
+    }
 }

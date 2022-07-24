@@ -30,7 +30,7 @@ public class DiscountService : IDiscountService
                 continue;
 
             discount += (productQty / discountQty) * discountPrice;
-            discount += (productQty % discountQty) * (scannedProducts.Distinct()?.SingleOrDefault(p => p.SKU == SKU)?.Price ?? 0);
+            discount += (productQty % discountQty) * getProductPrice(scannedProducts, SKU);
         }
 
         return discount;
@@ -39,5 +39,11 @@ public class DiscountService : IDiscountService
     public IList<DiscountOnQty> GetDiscountPrices()
     {
         return _discountPrices;
+    }
+
+
+    private decimal getProductPrice(IList<Product> scannedProducts, char SKU)
+    {
+        return scannedProducts?.Distinct()?.SingleOrDefault(p => p.SKU == SKU)?.Price ?? 0;
     }
 }
